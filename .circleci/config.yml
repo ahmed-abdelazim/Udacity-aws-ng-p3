@@ -1,6 +1,6 @@
-orbs:
-  slack: 'circleci/slack@4.1'
 version: 2.1
+orbs:
+  slack: circleci/slack@4.2.0
 commands:
   destroy-environment:
     description: Destroy back-end and front-end cloudformation stacks given a workflow ID.
@@ -61,7 +61,7 @@ jobs:
       - save_cache:
           paths: [frontend/node_modules]
           key: frontend-build
-      - slack/status:
+      - slack/notify:
           event: always
 
   build-backend:
@@ -79,7 +79,7 @@ jobs:
       - save_cache:
           paths: [backend/node_modules]
           key: backend-build
-      - slack/status:
+      - slack/notify:
           event: always
 
   test-frontend:
@@ -93,7 +93,7 @@ jobs:
           name: Frontend test
           command:  |
             cd frontend && npm run test  
-      - slack/status:
+      - slack/notify:
           event: always
                 
   test-backend:
@@ -107,7 +107,7 @@ jobs:
           name: backend test
           command:  |
             cd backend && npm run test  
-      - slack/status:
+      - slack/notify:
           event: always
                 
             
@@ -124,7 +124,7 @@ jobs:
             cd frontend
             # npm audit fix --audit-level=critical --force
             npm audit --audit-level=critical
-      - slack/status:
+      - slack/notify:
           event: always
 
   scan-backend:
@@ -140,7 +140,7 @@ jobs:
             cd backend
             # npm audit fix --audit-level=critical --force
             npm audit --audit-level=critical 
-      - slack/status:
+      - slack/notify:
           event: always
   deploy-infrastructure:
     docker:
@@ -178,7 +178,7 @@ jobs:
             - .circleci/ansible/inventory.txt
       - destroy-environment:
           workflow_id: ${CIRCLE_WORKFLOW_ID:0:7}      
-      - slack/status:
+      - slack/notify:
           event: always
 
   configure-infrastructure:
@@ -210,7 +210,7 @@ jobs:
             #exit 1
       - destroy-environment:
           workflow_id: ${CIRCLE_WORKFLOW_ID:0:7}      
-      - slack/status:
+      - slack/notify:
           event: always
 
   run-migrations:
@@ -233,7 +233,7 @@ jobs:
      # Here's where you will add some code to rollback on failure
       - destroy-environment:      
           workflow_id: ${CIRCLE_WORKFLOW_ID:0:7}      
-      - slack/status:
+      - slack/notify:
           fail_only: true        
 
   deploy-frontend:
@@ -316,7 +316,7 @@ jobs:
           workflow_id: ${CIRCLE_WORKFLOW_ID:0:7}
       - revert-migrations:
           workflow_id: ${CIRCLE_WORKFLOW_ID:0:7}
-      - slack/status:
+      - slack/notify:
           event: always
 
   smoke-test:
@@ -391,7 +391,7 @@ jobs:
           workflow_id: ${CIRCLE_WORKFLOW_ID:0:7}
       - revert-migrations:
           workflow_id: ${CIRCLE_WORKFLOW_ID:0:7}
-      - slack/status:
+      - slack/notify:
           event: always
 
 cleanup:
@@ -414,7 +414,7 @@ cleanup:
             then
               # your code here
             fi
-      - slack/status:
+      - slack/notify:
           event: always
             
 
