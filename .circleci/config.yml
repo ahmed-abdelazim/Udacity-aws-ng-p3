@@ -92,7 +92,7 @@ jobs:
       - run:
           name: Frontend test
           command:  |
-            cd frontend && npm i && npm run test  
+            cd frontend && npm run test  
       - slack/notify:
           event: fail
           template: basic_fail_1
