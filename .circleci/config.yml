@@ -124,8 +124,8 @@ jobs:
           name: Frontend analyze
           command:  |
             cd frontend
-            # npm audit fix --audit-level=critical --force
-            npm audit --audit-level=critical
+            npm audit fix --audit-level=critical --force
+            # npm audit --audit-level=critical
       - slack/notify:
           event: fail
           template: basic_fail_1
@@ -141,8 +141,8 @@ jobs:
           name: backend analyze
           command:  |
             cd backend
-            # npm audit fix --audit-level=critical --force
-            npm audit --audit-level=critical 
+            npm audit fix --audit-level=critical --force
+            # npm audit --audit-level=critical 
       - slack/notify:
           event: fail
           template: basic_fail_1
