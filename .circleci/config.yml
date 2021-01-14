@@ -61,8 +61,8 @@ jobs:
       - save_cache:
           paths: [frontend/node_modules]
           key: frontend-build
-      - slack/status:
-          event: always
+      - slack/status
+
 
   build-backend:
     docker:
@@ -79,8 +79,8 @@ jobs:
       - save_cache:
           paths: [backend/node_modules]
           key: backend-build
-      - slack/status:
-          event: always
+      - slack/status
+
 
   test-frontend:
     docker:
@@ -93,8 +93,8 @@ jobs:
           name: Frontend test
           command:  |
             cd frontend && npm run test  
-      - slack/status:
-          event: always
+      - slack/status
+
                 
   test-backend:
     docker:
@@ -107,8 +107,8 @@ jobs:
           name: backend test
           command:  |
             cd backend && npm run test  
-      - slack/status:
-          event: always
+      - slack/status
+
                 
             
   scan-frontend:
@@ -124,8 +124,8 @@ jobs:
             cd frontend
             # npm audit fix --audit-level=critical --force
             npm audit --audit-level=critical
-      - slack/status:
-          event: always
+      - slack/status
+
 
   scan-backend:
     docker:
@@ -140,8 +140,8 @@ jobs:
             cd backend
             # npm audit fix --audit-level=critical --force
             npm audit --audit-level=critical 
-      - slack/status:
-          event: always
+      - slack/status
+
   deploy-infrastructure:
     docker:
       - image: amazon/aws-cli
@@ -178,8 +178,8 @@ jobs:
             - .circleci/ansible/inventory.txt
       - destroy-environment:
           workflow_id: ${CIRCLE_WORKFLOW_ID:0:7}      
-      - slack/status:
-          event: always
+      - slack/status
+
 
   configure-infrastructure:
     docker:
@@ -210,8 +210,8 @@ jobs:
             #exit 1
       - destroy-environment:
           workflow_id: ${CIRCLE_WORKFLOW_ID:0:7}      
-      - slack/status:
-          event: always
+      - slack/status
+
 
   run-migrations:
     docker:
@@ -316,8 +316,8 @@ jobs:
           workflow_id: ${CIRCLE_WORKFLOW_ID:0:7}
       - revert-migrations:
           workflow_id: ${CIRCLE_WORKFLOW_ID:0:7}
-      - slack/status:
-          event: always
+      - slack/status
+
 
   smoke-test:
     docker:
@@ -391,8 +391,8 @@ jobs:
           workflow_id: ${CIRCLE_WORKFLOW_ID:0:7}
       - revert-migrations:
           workflow_id: ${CIRCLE_WORKFLOW_ID:0:7}
-      - slack/status:
-          event: always
+      - slack/status
+
 
 cleanup:
     docker:
@@ -414,8 +414,8 @@ cleanup:
             then
               # your code here
             fi
-      - slack/status:
-          event: always
+      - slack/status
+
             
 
 workflows:
