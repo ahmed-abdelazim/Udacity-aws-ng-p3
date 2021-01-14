@@ -62,7 +62,7 @@ jobs:
           paths: [frontend/node_modules]
           key: frontend-build
       - slack/status:
-          fail_only: true    
+          event: always
 
   build-backend:
     docker:
@@ -80,7 +80,7 @@ jobs:
           paths: [backend/node_modules]
           key: backend-build
       - slack/status:
-          fail_only: true    
+          event: always
 
   test-frontend:
     docker:
@@ -94,7 +94,7 @@ jobs:
           command:  |
             cd frontend && npm run test  
       - slack/status:
-          fail_only: true    
+          event: always
                 
   test-backend:
     docker:
@@ -108,7 +108,7 @@ jobs:
           command:  |
             cd backend && npm run test  
       - slack/status:
-          fail_only: true    
+          event: always
                 
             
   scan-frontend:
@@ -125,7 +125,7 @@ jobs:
             # npm audit fix --audit-level=critical --force
             npm audit --audit-level=critical
       - slack/status:
-          fail_only: true    
+          event: always
 
   scan-backend:
     docker:
@@ -141,8 +141,7 @@ jobs:
             # npm audit fix --audit-level=critical --force
             npm audit --audit-level=critical 
       - slack/status:
-          fail_only: true    
-
+          event: always
   deploy-infrastructure:
     docker:
       - image: amazon/aws-cli
@@ -180,7 +179,7 @@ jobs:
       - destroy-environment:
           workflow_id: ${CIRCLE_WORKFLOW_ID:0:7}      
       - slack/status:
-          fail_only: true    
+          event: always
 
   configure-infrastructure:
     docker:
@@ -212,7 +211,7 @@ jobs:
       - destroy-environment:
           workflow_id: ${CIRCLE_WORKFLOW_ID:0:7}      
       - slack/status:
-          fail_only: true    
+          event: always
 
   run-migrations:
     docker:
@@ -318,7 +317,7 @@ jobs:
       - revert-migrations:
           workflow_id: ${CIRCLE_WORKFLOW_ID:0:7}
       - slack/status:
-          fail_only: true    
+          event: always
 
   smoke-test:
     docker:
@@ -393,7 +392,7 @@ jobs:
       - revert-migrations:
           workflow_id: ${CIRCLE_WORKFLOW_ID:0:7}
       - slack/status:
-          fail_only: true    
+          event: always
 
 cleanup:
     docker:
@@ -416,7 +415,7 @@ cleanup:
               # your code here
             fi
       - slack/status:
-          fail_only: true    
+          event: always
             
 
 workflows:
