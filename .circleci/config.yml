@@ -187,7 +187,7 @@ jobs:
     steps:
       - checkout
       - add_ssh_keys:
-        fingerprints: ["9c:77:e4:87:42:0a:8e:a6:b0:e6:94:0c:12:03:b5:19"]
+          fingerprints: ["9c:77:e4:87:42:0a:8e:a6:b0:e6:94:0c:12:03:b5:19"]
       - persist_to_workspace:
           root: ~/
           paths:
