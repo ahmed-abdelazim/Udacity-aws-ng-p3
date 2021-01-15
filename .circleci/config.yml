@@ -37,8 +37,8 @@ commands:
           name: Revert migrations
           when: on_fail
           command: |
-            SUCCESS=$(curl -H "token: ${MEMSTASH_TOKEN}" --request GET https://api.memstash.io/values/migrations-${CIRCLE_WORKFLOW_ID:0:7})
-            if(( $SUCCESS==1 )); 
+            EXIT_CODE=$(curl -H "token: ${MEMSTASH_TOKEN}" --request GET https://api.memstash.io/values/migrations-${CIRCLE_WORKFLOW_ID:0:7})
+            if(( $EXIT_CODE==0 )); 
             then
               cd backend
               npm install
@@ -74,7 +74,7 @@ jobs:
       - run:
           name: Back-end build
           command: |
-             cd backend && npm install && npm run build
+             cd backend && npm run build
       - save_cache:
           paths: [backend/node_modules]
           key: backend-build
