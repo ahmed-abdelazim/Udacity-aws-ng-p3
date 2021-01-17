@@ -147,7 +147,7 @@ jobs:
           name: Install dependencies
           command:  |
             yum update
-            yum install gzip tar jq # jq is needed for slack/notify
+            yum install -y gzip tar jq # jq is needed for slack/notify
       - run:
           name: Ensure back-end infrastructure exists
           command: |
@@ -250,7 +250,7 @@ jobs:
           command: |
             curl -sL https://rpm.nodesource.com/setup_lts.x | bash -
             yum -y install nodejs
-            yum -y install tar gzip
+            yum -y install tar gzip jq
             cd frontend
             npm install
       - run:
@@ -381,7 +381,7 @@ jobs:
             # Used to revert migrations
             curl -sL https://rpm.nodesource.com/setup_lts.x | bash -
             yum -y install nodejs
-            # yum -y install tar gzip
+            yum -y install tar gzip jq # jq is for slack/notify
       - run:
           name: Update cloudfront distribution
           command: |
