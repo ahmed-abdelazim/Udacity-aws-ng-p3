@@ -13,17 +13,9 @@ commands:
           name: Destroy environments
           when: on_fail
           command: |
-            if aws cloudformation wait stack-exists --stack-name udapeople-cloudfront
-            then 
-              aws cloudformation delete-stack --stack-name udapeople-cloudfront
-            fi
-            if aws cloudformation wait stack-exists --stack-name udapeople-frontend-<< parameters.workflow_id >>
-            then 
-              aws cloudformation delete-stack --stack-name udapeople-frontend-<< parameters.workflow_id >>
-            fi
-            if aws cloudformation wait stack-exists --stack-name udapeople-backend-<< parameters.workflow_id >>
-            then
-              aws cloudformation delete-stack --stack-name udapeople-backend-<< parameters.workflow_id >>
+            aws cloudformation delete-stack --stack-name udapeople-cloudfront
+            aws cloudformation delete-stack --stack-name udapeople-frontend-<< parameters.workflow_id >>
+            aws cloudformation delete-stack --stack-name udapeople-backend-<< parameters.workflow_id >>
             aws s3 rb s3://udapeople-<< parameters.workflow_id >> --force  
             # exit 1
 
@@ -151,6 +143,11 @@ jobs:
       - image: amazon/aws-cli
     steps:
       - checkout
+      - run:
+          name: Install dependencies
+          command:  |
+            yum update
+            yum install gzip tar jq # jq is needed for slack/notify
       - run:
           name: Ensure back-end infrastructure exists
           command: |
