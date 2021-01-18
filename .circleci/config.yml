@@ -29,8 +29,8 @@ commands:
           name: Revert migrations
           when: on_fail
           command: |
-            EXIT_CODE=$(curl -H "token: ${MEMSTASH_TOKEN}" --request GET https://api.memstash.io/values/migrations-${CIRCLE_WORKFLOW_ID:0:7})
-            if(( $EXIT_CODE==0 )); 
+            SUCCESS=$(curl -H "token: ${MEMSTASH_TOKEN}" --request GET https://api.memstash.io/values/migrations-${CIRCLE_WORKFLOW_ID:0:7})
+            if(( $SUCCESS==1 )); 
             then
               cd backend
               npm install
@@ -191,7 +191,7 @@ jobs:
       - add_ssh_keys:
           fingerprints: ["9c:77:e4:87:42:0a:8e:a6:b0:e6:94:0c:12:03:b5:19"]
       - persist_to_workspace:
-          root: ~/
+          root: .
           paths:
             - .circleci/ansible/inventory.txt
       - run:
@@ -225,13 +225,14 @@ jobs:
           name: Run migrations
           command: |
             cd backend
-            npm run migrations
-            RESULT=$?
+            SUCCESS=0
+            RESULT=$(npm run migrations | grep "has been executed successfully")
+            if [ ! -z "$RESULT" ];then SUCCESS=1; fi 
             # exit 1
       - run:
           name: Send migration results to memstash
           command: |
-            curl -H "Content-Type: text/plain" -H "token: ${MEMSTASH_TOKEN}" --request PUT --data ${RESULT} https://api.memstash.io/values/migrations-${CIRCLE_WORKFLOW_ID:0:7}
+            curl -H "Content-Type: text/plain" -H "token: ${MEMSTASH_TOKEN}" --request PUT --data ${SUCCESS} https://api.memstash.io/values/migrations-${CIRCLE_WORKFLOW_ID:0:7}
             # exit 1
      # Here's where you will add some code to rollback on failure
       - destroy-environment:      
@@ -290,7 +291,7 @@ jobs:
           fingerprints: ["9c:77:e4:87:42:0a:8e:a6:b0:e6:94:0c:12:03:b5:19"]
       # attach workspace
       - attach_workspace:
-          at: ~/
+          at: .
       - run:
           name: Install dependencies
           command: |
@@ -442,17 +443,17 @@ workflows:
 #           filters:
 #             branches:
 #               only: [test-feature-branch]
-#       - configure-infrastructure:
-#           requires: [deploy-infrastructure]
-#       - run-migrations:
-#           requires: [configure-infrastructure]
-#       - deploy-frontend:
-#           requires: [run-migrations]
-#       - deploy-backend:
-#           requires: [run-migrations]
-#       - smoke-test:
-#           requires: [deploy-backend, deploy-frontend]
-#       - cloudfront-update:
-#           requires: [smoke-test]
-#       - cleanup:
-#           requires: [cloudfront-update]
+      - configure-infrastructure:
+          requires: [deploy-infrastructure]
+      - run-migrations:
+          requires: [configure-infrastructure]
+      - deploy-frontend:
+          requires: [run-migrations]
+      - deploy-backend:
+          requires: [run-migrations]
+      - smoke-test:
+          requires: [deploy-backend, deploy-frontend]
+      - cloudfront-update:
+          requires: [smoke-test]
+      - cleanup:
+          requires: [cloudfront-update]
