@@ -228,8 +228,8 @@ jobs:
           command: |
             # We need awscli to rollback the infrastructure if job failed
             # also jq is needed for slack/notify
-            apt update
-            apt install -y awscli jq
+            sudo apt update
+            sudo apt install -y awscli jq
 
       - run:
           name: Run migrations
