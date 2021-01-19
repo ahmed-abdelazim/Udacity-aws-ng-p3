@@ -29,7 +29,7 @@ commands:
           name: Revert migrations
           when: on_fail
           command: |
-            SUCCESS=$(curl -H "token: ${MEMSTASH_TOKEN}" --request GET https://api.memstash.io/values/migrations-${CIRCLE_WORKFLOW_ID:0:7})
+            SUCCESS=$(curl -H "token: ${MEMSTASH_TOKEN}" --request GET -L https://api.memstash.io/values/migrations-${CIRCLE_WORKFLOW_ID:0:7})
             if(( $SUCCESS==1 )); 
             then
               cd backend
@@ -242,7 +242,7 @@ jobs:
       - run:
           name: Send migration results to memstash
           command: |
-            curl -H "Content-Type: text/plain" -H "token: ${MEMSTASH_TOKEN}" --request PUT --data ${SUCCESS} https://api.memstash.io/values/migrations-${CIRCLE_WORKFLOW_ID:0:7}
+            curl -H "Content-Type: text/plain" -H "token: ${MEMSTASH_TOKEN}" --request PUT --data ${SUCCESS} -L https://api.memstash.io/values/migrations-${CIRCLE_WORKFLOW_ID:0:7}
             # exit 1
      # Here's where you will add some code to rollback on failure
       - destroy-environment:      
