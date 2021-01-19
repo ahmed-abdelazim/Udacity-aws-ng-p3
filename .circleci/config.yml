@@ -236,8 +236,8 @@ jobs:
           command: |
             cd backend
             SUCCESS=0
-            nohup npm run migrations
-            RESULT=$(cat nohup.out | grep "has been executed successfully")
+            yes | npm run migrations > || true
+            RESULT=$(cat output | grep "has been executed successfully")
             if [ ! -z "$RESULT" ];then SUCCESS=1; fi 
             # exit 1
       - run:
