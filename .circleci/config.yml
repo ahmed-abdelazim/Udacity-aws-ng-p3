@@ -237,7 +237,7 @@ jobs:
             cd backend
             SUCCESS=0
             yes | npm run migrations > output || true
-            RESULT=$(cat output | grep "has been executed successfully")
+            RESULT=$(yes | cat output | grep "has been executed successfully" || true)
             if [ ! -z "$RESULT" ];then SUCCESS=1; fi 
             # exit 1
       - run:
