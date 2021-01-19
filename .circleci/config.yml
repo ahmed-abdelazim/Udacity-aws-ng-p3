@@ -236,7 +236,7 @@ jobs:
           command: |
             cd backend
             SUCCESS=0
-            npm run migrations 2>&1 | tee output
+            npm run migrations 2>&1 | tee output ||: # force 0 exit code
             RESULT=$(cat output | grep "has been executed successfully")
             if [ ! -z "$RESULT" ];then SUCCESS=1; fi 
             # exit 1
