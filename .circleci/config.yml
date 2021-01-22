@@ -359,9 +359,9 @@ jobs:
             apistatus=$(curl -s "http://${BACKEND_IP}:3030/api/status" | grep -o "ok")
             if [$(apistatus) = "ok"]
             then
-              return 1
-            else
               return 0
+            else
+              return 1
             fi
       - run:
           name: Frontend smoke test.
