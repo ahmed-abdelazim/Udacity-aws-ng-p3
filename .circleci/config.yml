@@ -351,16 +351,14 @@ jobs:
             apk add --update curl nodejs npm
             pip install awscli
       - run:
-          name: Get backend url
+          name: Get backend dns
           command: |
-           BACKEND_IP=$(aws cloudformation \
-              list-exports --query "Exports[?Name==\`backendIP\`].Value" \
-              --no-paginate --output text)
-           echo $BACKEND_IP
+            BACKEND_DNS=$(aws ec2 describe-instances --region ${AWS_DEFAULT_REGION} --filters 'Name=tag:Name,Values=udapeople-backend*' --query "Reservations[*].Instances[0].PublicDnsName" --output text)
+
       - run:
           name: Backend smoke test.
           command: |
-            apistatus=$(yes | curl -s "http://${BACKEND_IP}:3030/api/status" | grep -o "ok" || true)            
+            apistatus=$(yes | curl -s "http://${BACKEND_DNS}:3030/api/status" | grep -o "ok" || true)            
             if [$(apistatus) = "ok"]
             then
               return 1
