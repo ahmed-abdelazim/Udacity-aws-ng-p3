@@ -138,6 +138,8 @@ jobs:
       - slack/notify:
           event: fail
           template: basic_fail_1
+
+
   deploy-infrastructure:
     docker:
       - image: amazon/aws-cli
@@ -174,6 +176,10 @@ jobs:
             ls -la
             echo "[web]" > .circleci/ansible/inventory.txt
             BACKEND_DNS=$(aws ec2 describe-instances --region ${AWS_DEFAULT_REGION} --filters 'Name=tag:Name,Values=udapeople-backend*' --query "Reservations[*].Instances[0].PublicDnsName" --output text)
+            echo $BACKEND_DNS
+            while [[ -z $BACKEND_DNS ]] ; do
+            BACKEND_DNS=$(aws ec2 describe-instances --region ${AWS_DEFAULT_REGION} --filters 'Name=tag:Name,Values=udapeople-backend*' --query "Reservations[*].Instances[0].PublicDnsName" --output text)
+            sleep 10; echo "waiting backend dns" ;done
             echo $BACKEND_DNS
             echo $BACKEND_DNS >> .circleci/ansible/inventory.txt
             # exit 1
