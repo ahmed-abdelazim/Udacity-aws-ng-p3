@@ -156,7 +156,7 @@ jobs:
               --tags project=udapeople \
               --stack-name udapeople-backend-${CIRCLE_WORKFLOW_ID:0:7} \
               --parameter-overrides ID="${CIRCLE_WORKFLOW_ID:0:7}"
-            aws wait stack-create-complete --stack-name udapeople-backend-${CIRCLE_WORKFLOW_ID:0:7}
+            aws cloudformation wait stack-create-complete --stack-name  udapeople-backend-${CIRCLE_WORKFLOW_ID:0:7}
               # exit 1
       - run:
           name: Ensure front-end infrastructure exist
@@ -166,7 +166,7 @@ jobs:
               --tags project=udapeople \
               --stack-name udapeople-frontend-${CIRCLE_WORKFLOW_ID:0:7} \
               --parameter-overrides ID="${CIRCLE_WORKFLOW_ID:0:7}"
-              aws wait stack-create-complete --stack-name udapeople-frontend-${CIRCLE_WORKFLOW_ID:0:7}  
+              aws cloudformation wait stack-create-complete --stack-name  udapeople-frontend-${CIRCLE_WORKFLOW_ID:0:7}  
               # exit 1
       - run:
           name: Add back-end ip to ansible inventory
