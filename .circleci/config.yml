@@ -353,15 +353,16 @@ jobs:
            BACKEND_IP=$(aws cloudformation \
               list-exports --query "Exports[?Name==\`backendIP\`].Value" \
               --no-paginate --output text)
+           echo $BACKEND_IP
       - run:
           name: Backend smoke test.
           command: |
-            apistatus=$(curl -s "http://${BACKEND_IP}:3030/api/status" | grep -o "ok")
+            apistatus=$(yes | curl -s "http://${BACKEND_IP}:3030/api/status" | grep -o "ok" || true)            
             if [$(apistatus) = "ok"]
             then
-              return 0
-            else
               return 1
+            else
+              return 0
             fi
       - run:
           name: Frontend smoke test.
