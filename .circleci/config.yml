@@ -173,8 +173,9 @@ jobs:
           command: |
             ls -la
             echo "[web]" > .circleci/ansible/inventory.txt
-            BACKEND_DNS=$(aws ec2 describe-instances --region ${AWS_DEFAULT_REGION} --filters 'Name=tag:Name,Values=udapeople-backend-ec2-*' --query "Reservations[*].Instances[0].PublicDnsName" --output text)
+            BACKEND_DNS=$(aws ec2 describe-instances --region ${AWS_DEFAULT_REGION} --filters 'Name=tag:Name,Values=udapeople-backend*' --query "Reservations[*].Instances[0].PublicDnsName" --output text)
             echo $BACKEND_DNS
+            if [ -z $BACKEND_DNS ]; then sleep 5 ; fi
             echo $BACKEND_DNS >> .circleci/ansible/inventory.txt
             # exit 1
       - persist_to_workspace:

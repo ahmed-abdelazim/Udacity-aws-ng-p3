@@ -34,4 +34,4 @@ Resources:
       ImageId: ami-0f165346951da18c9 
       Tags:
         - Key: Name
-          Value: !Sub backend-${ID}
+          Value: !Sub udapeople-backend-${ID}
