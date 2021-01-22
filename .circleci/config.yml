@@ -181,7 +181,7 @@ jobs:
             sleep 10; echo "waiting backend dns" ;done
             echo $BACKEND_DNS
             echo $BACKEND_DNS >> .circleci/ansible/inventory.txt
-            cat inventory.txt
+            cat .circleci/ansible/inventory.txt
             # exit 1
       - persist_to_workspace:
           root: .
