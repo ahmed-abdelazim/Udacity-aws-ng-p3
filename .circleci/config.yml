@@ -214,7 +214,7 @@ jobs:
       - run:
           name: Configure server
           command: |
-            ANSIBLE_HOST_KEY_CHECKING=false
+            export ANSIBLE_HOST_KEY_CHECKING=False
             cat .circleci/ansible/inventory.txt
             # printenv >> ./backend/.env
             cd .circleci/ansible/
