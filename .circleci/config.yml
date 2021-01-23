@@ -209,6 +209,7 @@ jobs:
             apk add --no-cache --upgrade bash
             apk add --no-cache --update ansible
             apk add --no-cache openssh-client
+            apk add --no-cache jq
             pip3 install awscli
             # exit 1
       - run:
