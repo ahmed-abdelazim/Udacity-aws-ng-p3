@@ -321,6 +321,7 @@ jobs:
       - run:
           name: Deploy backend
           command: |
+            export ANSIBLE_HOST_KEY_CHECKING=False
             echo ENVIROMENT=development > "backend/.env"
             echo NODE_ENV=production >> "backend/.env"
             echo TYPEORM_CONNECTION=postgres >> "backend/.env"
