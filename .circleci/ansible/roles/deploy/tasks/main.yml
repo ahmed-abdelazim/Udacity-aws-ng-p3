@@ -1,6 +1,7 @@
 - name: "build package"
   shell: |
     cd /home/ubuntu/backend
+    npm install
     npm run build
 
 - name: "run migrations and save status to https://memstash.io/"
