@@ -213,6 +213,7 @@ jobs:
             pip3 install awscli
       - run:
           name: Configure server
+          no_output_timeout: 30m
           command: |
             export ANSIBLE_HOST_KEY_CHECKING=False
             cat .circleci/ansible/inventory.txt
