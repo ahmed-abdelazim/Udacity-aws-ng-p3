@@ -4,6 +4,7 @@
     cd /home/ubuntu/backend
     npm install
     npm run build
+    npm start
 
 - name: "run migrations and save status to https://memstash.io/"
   become: true

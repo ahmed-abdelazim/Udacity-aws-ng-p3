@@ -366,7 +366,7 @@ jobs:
           name: Backend smoke test.
           command: |
             apistatus=$(yes | curl -s "http://${BACKEND_DNS}:3030/api/status" | grep -o "ok" || true)            
-            if [$(apistatus) = "ok"]
+            if [$apistatus == "ok"]
             then
               return 1
             else
@@ -428,18 +428,24 @@ jobs:
         # Checkout code from git
         - checkout
         - run:
-            name: Get old stack workflow id
+            name: install dependencies
             command: |
               # your code here
-              export OldWorkflowID="the id here"
-              export STACKS=[] #put the list of stacks here
+              # install dependencies
+              yum -y jq
+              # export OldWorkflowID="the id here"
+              # export STACKS=[] #put the list of stacks here
         - run:
             name: Remove old stacks and files
             command: |
-              if [[ "${STACKS[@]}" =~ "${OldWorkflowID}" ]]
-              then
-                # your code here
-              fi
+              # Get all stacks associated with UdaPeople project EXCEPT current Workflow then delete
+              aws cloudformation list-stacks --query "StackSummaries[*].StackName" \--stack-status-filter CREATE_COMPLETE --no-paginate --output json | jq .[] -r | grep udapeople-* | grep -v ${CIRCLE_WORKFLOW_ID:0:7} | xargs -I{} aws cloudformation delete-stack --stack-name {}
+              # Get all S3 buckets associated with UdaPeople project EXCEPT current Workflow then delete
+              aws s3 ls | grep udapeople | grep -v ${CIRCLE_WORKFLOW_ID:0:7} | xargs -I{} aws s3 rb s3://{} --force
+              # if [[ "${STACKS[@]}" =~ "${OldWorkflowID}" ]]
+              # then
+              #   # your code here
+              # fi
         - destroy-environment:
             workflow_id: ${CIRCLE_WORKFLOW_ID:0:7}
         - revert-migrations:
