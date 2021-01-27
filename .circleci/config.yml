@@ -432,7 +432,7 @@ jobs:
             command: |
               # your code here
               # install dependencies
-              yum -y jq
+              yum -y install jq
               # export OldWorkflowID="the id here"
               # export STACKS=[] #put the list of stacks here
         - run:
