@@ -2,10 +2,9 @@
   become: true
   shell: |
     cd /home/ubuntu/backend
-    npm install
+    # npm install
     npm run build
-    npm start
-
+    
 - name: "run migrations and save status to https://memstash.io/"
   become: true
   shell: |
@@ -23,4 +22,5 @@
 - name: "use pm2 to run the node server"
   shell: |
     cd /home/ubuntu/backend
-    pm2 start npm -- run "start:dev"
+    npm start
+    #pm2 start npm -- run "start:dev"
