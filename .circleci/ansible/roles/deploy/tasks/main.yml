@@ -22,5 +22,5 @@
 - name: "use pm2 to run the node server"
   shell: |
     cd /home/ubuntu/backend
-    npm start
+    npm start --silent &
     #pm2 start npm -- run "start:dev"
