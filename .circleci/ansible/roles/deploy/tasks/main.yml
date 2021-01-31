@@ -20,7 +20,8 @@
     msg: "{{ migration_output.stdout_lines }}"
 
 - name: "use pm2 to run the node server"
+  become: true
   shell: |
     cd /home/ubuntu/backend
-    npm start --silent &
-    #pm2 start npm -- run "start:dev"
+    #npm start --silent &
+    pm2 start npm -- run "start:dev"
