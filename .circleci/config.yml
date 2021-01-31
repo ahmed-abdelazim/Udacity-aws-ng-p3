@@ -446,12 +446,12 @@ jobs:
               else
                 aws s3 ls | awk '{print $3}' | grep udapeople | grep -v ${CIRCLE_WORKFLOW_ID:0:7} | xargs -I{} aws s3 rb s3://{} --force
               fi
+              echo "OK 0 ___ S3 Ok"
               # Get all stacks associated with UdaPeople project EXCEPT current Workflow then delete
               aws cloudformation list-stacks --query 'StackSummaries[*].StackName' \
               --stack-status-filter CREATE_COMPLETE \
               --no-paginate --output json | jq .[] -r > stacks.txt
               cat stacks.txt
-              echo "OK 0 ___ Get all stacks"
 
               cat stacks.txt | grep udapeople > stacks.txt
               echo "OK  1 ___ Get all stacks"
