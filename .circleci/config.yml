@@ -440,26 +440,9 @@ jobs:
             command: |
               echo $CIRCLE_WORKFLOW_ID
               # Get all S3 buckets associated with UdaPeople project EXCEPT current Workflow then delete
-              if [ ! -z $(aws s3 ls | awk '{print $3}' | grep udapeople | grep -v ${CIRCLE_WORKFLOW_ID:0:7}) ]
-              then
-                echo "$0 - Error \$var not set or NULL"
-              else
-                aws s3 ls | awk '{print $3}' | grep udapeople | grep -v ${CIRCLE_WORKFLOW_ID:0:7} | xargs -I{} aws s3 rb s3://{} --force
-              fi
-              echo "OK 0 ___ S3 Ok"
+              yes | aws s3 ls | awk '{print $3}' | grep udapeople | grep -v ${CIRCLE_WORKFLOW_ID:0:7} | xargs -I{} aws s3 rb s3://{} --force || true
               # Get all stacks associated with UdaPeople project EXCEPT current Workflow then delete
-              aws cloudformation list-stacks --query 'StackSummaries[*].StackName' \
-              --stack-status-filter CREATE_COMPLETE \
-              --no-paginate --output json | jq .[] -r > stacks.txt
-              cat stacks.txt
-
-              cat stacks.txt | grep udapeople > stacks.txt
-              echo "OK  1 ___ Get all stacks"
-              cat stacks.txt | grep -v ${CIRCLE_WORKFLOW_ID:0:7}  > stacks.txt
-              echo "OK  2 ___ Get all stacks" 
-              cat stacks.txt | xargs -I{} aws cloudformation delete-stack --stack-name {}
-              echo "OK  3 ___ Get all stacks" 
-              echo "OK  4 ___ Get all stacks" 
+              yes | aws cloudformation list-stacks --query 'StackSummaries[*].StackName' --stack-status-filter CREATE_COMPLETE --no-paginate --output json | jq .[] -r | grep udapeople | grep -v ${CIRCLE_WORKFLOW_ID:0:7} | xargs -I{} aws cloudformation delete-stack --stack-name {} || true
 
         - destroy-environment:
             workflow_id: ${CIRCLE_WORKFLOW_ID:0:7}
