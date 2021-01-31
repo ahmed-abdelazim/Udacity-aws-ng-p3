@@ -445,6 +445,7 @@ jobs:
               aws cloudformation list-stacks --query 'StackSummaries[*].StackName' \
               --stack-status-filter CREATE_COMPLETE \
               --no-paginate --output json | jq .[] -r > stacks.txt
+              cat stacks.txt
               echo "OK 0 ___ Get all stacks"
 
               cat stacks.txt | grep udapeople > stacks.txt
