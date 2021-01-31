@@ -439,6 +439,8 @@ jobs:
             name: Remove old stacks and files
             command: |
               echo $CIRCLE_WORKFLOW_ID
+              # Get all S3 buckets associated with UdaPeople project EXCEPT current Workflow then delete
+              aws s3 ls | awk '{print $3}' | grep udapeople | grep -v ${CIRCLE_WORKFLOW_ID:0:7} | xargs -I{} aws s3 rb s3://{} --force
               # Get all stacks associated with UdaPeople project EXCEPT current Workflow then delete
               aws cloudformation list-stacks --query 'StackSummaries[*].StackName' \
               --stack-status-filter CREATE_COMPLETE \
@@ -451,8 +453,6 @@ jobs:
               echo "OK  2 ___ Get all stacks" 
               cat stacks.txt | xargs -I{} aws cloudformation delete-stack --stack-name {}
               echo "OK  3 ___ Get all stacks" 
-              # Get all S3 buckets associated with UdaPeople project EXCEPT current Workflow then delete
-              aws s3 ls | awk '{print $3}' | grep udapeople | grep -v ${CIRCLE_WORKFLOW_ID:0:7} | xargs -I{} aws s3 rb s3://{} --force
               echo "OK  4 ___ Get all stacks" 
 
         - destroy-environment:
