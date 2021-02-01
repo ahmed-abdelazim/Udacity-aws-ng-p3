@@ -23,5 +23,5 @@
   become: true
   shell: |
     cd /home/ubuntu/backend
-    #npm start --silent &
+    nohup npm start --silent &
     pm2 start npm -- run "start:dev"
