@@ -380,9 +380,8 @@ jobs:
             then
               return 1
             else
-              return 0
+              return 1
             fi
-            exit 125
       # Here's where you will add some code to rollback on failure
       - destroy-environment:
           workflow_id: ${CIRCLE_WORKFLOW_ID:0:7}
