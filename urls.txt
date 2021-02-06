@@ -1,5 +1,5 @@
-[URL01]
-[URL02]
-[URL03]
-[URL04]
-[URL05]
+[URL01]https://github.com/ahmed-abdelazim/Udacity-aws-ng-p3
+[URL02]http://d1rvak32cs2dvd.cloudfront.net/
+[URL03]http://udapeople-6bf6a51.s3-website-us-west-2.amazonaws.com/
+[URL04]http://ec2-34-217-43-158.us-west-2.compute.amazonaws.com:3030/
+[URL05]http://ec2-34-213-216-36.us-west-2.compute.amazonaws.com:9090
