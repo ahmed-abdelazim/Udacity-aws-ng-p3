@@ -20,5 +20,5 @@
 - name: "install package dependencies"
   shell: |
     cd /home/ubuntu/backend    
-    npm install typescript -g 
+    # npm install typescript -g 
     npm install
