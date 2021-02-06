@@ -44,14 +44,14 @@ jobs:
     steps:
       - checkout
       - restore_cache:
-          keys: [frontend-build]
+          keys: [frontend-build-{{checksum "package.json" }}]
       - run:
           name: Build front-end
           command: |
             cd frontend && npm install && npm run build
       - save_cache:
           paths: [frontend/node_modules]
-          key: frontend-build-{{ checksum "packag.json" }}
+          key: frontend-build-{{checksum "package.json" }}
       - slack/notify:
           event: fail
           template: basic_fail_1
@@ -69,7 +69,7 @@ jobs:
              cd backend && npm install && npm run build
       - save_cache:
           paths: [backend/node_modules]
-          key: backend-build-{{ checksum "package.json" }}
+          key: backend-build-{{checksum "package.json" }}
       - slack/notify:
           event: fail
           template: basic_fail_1
@@ -80,7 +80,7 @@ jobs:
     steps:
       - checkout
       - restore_cache:
-          keys: [frontend-build]
+          keys: [frontend-build-{{checksum "package.json" }}]
       - run:
           name: Frontend test
           command:  |
@@ -95,7 +95,7 @@ jobs:
     steps:
       - checkout
       - restore_cache:
-          keys: [backend-build]
+          keys: [backend-build-{{checksum "package.json" }}]
       - run:
           name: backend test
           command:  |
@@ -111,7 +111,7 @@ jobs:
     steps:
       - checkout
       - restore_cache:
-          keys: [frontend-build]
+          keys: [frontend-build-{{checksum "package.json" }}]
       - run:
           name: Frontend analyze
           command:  |
@@ -128,7 +128,7 @@ jobs:
     steps:
       - checkout
       - restore_cache:
-          keys: [backend-build]
+          keys: [backend-build-{{checksum "package.json" }}]
       - run:
           name: backend analyze
           command:  |
@@ -244,7 +244,7 @@ jobs:
     steps:
       - checkout
       - restore_cache:
-          keys: [backend-build]
+          keys: [backend-build-{{checksum "package.json" }}]
       - run:
           name: Install dependencies
           command: |
