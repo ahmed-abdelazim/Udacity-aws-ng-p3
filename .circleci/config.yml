@@ -51,7 +51,7 @@ jobs:
             cd frontend && npm install && npm run build
       - save_cache:
           paths: [frontend/node_modules]
-          key: frontend-build
+          key: frontend-build-{{ checksum "package-lock.json" }}
       - slack/notify:
           event: fail
           template: basic_fail_1
@@ -69,7 +69,7 @@ jobs:
              cd backend && npm install && npm run build
       - save_cache:
           paths: [backend/node_modules]
-          key: backend-build
+          key: backend-build-{{ checksum "package-lock.json" }}
       - slack/notify:
           event: fail
           template: basic_fail_1
